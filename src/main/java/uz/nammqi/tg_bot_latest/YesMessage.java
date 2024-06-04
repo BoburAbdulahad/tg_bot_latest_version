@@ -44,7 +44,7 @@ public class YesMessage {
             YesCallBackData.ismFam = false;
             YesCallBackData.isPerson = false;
 
-        } else if (getUserText == null) {//TODO STEP 5 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        } else if (getUserText == null) {//TODO STEP 5-B $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
             String phoneNumber = message.getContact().getPhoneNumber();
             dbConnect.insertPhone(chatId,phoneNumber);
             sendText = "Jinsingizni tanlang:";
@@ -141,7 +141,7 @@ public class YesMessage {
 
 
                 dbConnect.insertFullName(chatId,getUserText);
-                /*HUDUD*/      sendText = "Hududni tanlang: ";
+                /*HUDUD*/      sendText = "Viloyatingizni tanlang: ";
 
                 sendMessage = getSendMessage(chatId, sendText);
                 InlineKeyboardMarkup inlineKeyboardMarkup = new Hudud().getInlineHududTanlash();

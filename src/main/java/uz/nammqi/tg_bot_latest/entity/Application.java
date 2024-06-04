@@ -1,6 +1,7 @@
 package uz.nammqi.tg_bot_latest.entity;
 
 import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,7 +33,13 @@ public class Application {
     private String murojaatTuri;
 
     @Column(nullable = true)
-    private String hudud;
+    private String region;
+
+    @Column(nullable = true)
+    private String district;
+
+    @Column(nullable = true)
+    private String village;
 
     @Column(nullable = true)
     private String telNomer;
@@ -43,12 +50,12 @@ public class Application {
     @Column(nullable = true)
     private int yil;
 
-
-    @Column(nullable = true)
-    private String oy;
-
-    @Column(nullable = true)
-    private int kun;
+//
+//    @Column(nullable = true)
+//    private String oy;
+//
+//    @Column(nullable = true)
+//    private int kun;
 
     @Column(nullable = true)
     private String maqom;
@@ -58,6 +65,9 @@ public class Application {
 
     @Column(nullable = true)
     private String murojaatMatni;
+
+    @Column(nullable = true)
+    private String messageId;
 
 
     public Application(Long chatId) {

@@ -17,6 +17,9 @@ public class TgBotLatestApplication {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+
+
+
     }
 
 }

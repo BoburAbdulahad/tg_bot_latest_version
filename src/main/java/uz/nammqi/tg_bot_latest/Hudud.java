@@ -1,89 +1,112 @@
 package uz.nammqi.tg_bot_latest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import uz.nammqi.tg_bot_latest.entity.Regions;
+import uz.nammqi.tg_bot_latest.repository.RegionRepository;
+import uz.nammqi.tg_bot_latest.service.DBConnect;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class Hudud {
+    @Autowired
+    RegionRepository regionRepository;
 
+    DBConnect dbConnect=new DBConnect();
 
     public InlineKeyboardMarkup getInlineHududTanlash() {
-//        SendMessage sendMessage=new SendMessage();
+        DBConnect dbConnect=new DBConnect();
+//        List<Regions> allRegions = regionRepository.findAll();
+        List<String> allRegions =dbConnect.getRegions();
         ArrayList<List<InlineKeyboardButton>> listsss = new ArrayList<>();
-        List<InlineKeyboardButton> inlineKeyboardButtonList1 = new ArrayList<>();
-        InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
-        List<InlineKeyboardButton> inlineKeyboardButtonList2 = new ArrayList<>();
-        InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
-        List<InlineKeyboardButton> inlineKeyboardButtonList3 = new ArrayList<>();
-        InlineKeyboardButton inlineKeyboardButton3 = new InlineKeyboardButton();
-        List<InlineKeyboardButton> inlineKeyboardButtonList4 = new ArrayList<>();
-        InlineKeyboardButton inlineKeyboardButton4 = new InlineKeyboardButton();
-        List<InlineKeyboardButton> inlineKeyboardButtonList5 = new ArrayList<>();
-        InlineKeyboardButton inlineKeyboardButton5 = new InlineKeyboardButton();
-        List<InlineKeyboardButton> inlineKeyboardButtonList6 = new ArrayList<>();
-        InlineKeyboardButton inlineKeyboardButton6 = new InlineKeyboardButton();
-        InlineKeyboardButton inlineKeyboardButton7 = new InlineKeyboardButton();
-        InlineKeyboardButton inlineKeyboardButton8 = new InlineKeyboardButton();
-        InlineKeyboardButton inlineKeyboardButton9 = new InlineKeyboardButton();
-        InlineKeyboardButton inlineKeyboardButton10 = new InlineKeyboardButton();
-        InlineKeyboardButton inlineKeyboardButton11 = new InlineKeyboardButton();
-        InlineKeyboardButton inlineKeyboardButton12 = new InlineKeyboardButton();
-        inlineKeyboardButton1.setText("Andijon");
-        inlineKeyboardButton1.setCallbackData("Andijon");
-        inlineKeyboardButton2.setText("Namangan");
-        inlineKeyboardButton2.setCallbackData("Namangan");
-        inlineKeyboardButton3.setText("Fargona");
-        inlineKeyboardButton3.setCallbackData("Fargona");
-        inlineKeyboardButton4.setText("Toshkent");
-        inlineKeyboardButton4.setCallbackData("Toshkent");
-        inlineKeyboardButton5.setText("Sirdaryo");
-        inlineKeyboardButton5.setCallbackData("Sirdaryo");
-        inlineKeyboardButton6.setText("Jizzax");
-        inlineKeyboardButton6.setCallbackData("Jizzax");
-        inlineKeyboardButton7.setText("Buxoro");
-        inlineKeyboardButton7.setCallbackData("Buxoro");
-        inlineKeyboardButton8.setText("Navoiy");
-        inlineKeyboardButton8.setCallbackData("Navoiy");
-        inlineKeyboardButton9.setText("Surxandaryo");
-        inlineKeyboardButton9.setCallbackData("Surxandaryo");
-        inlineKeyboardButton10.setText("Qashqadaryo");
-        inlineKeyboardButton10.setCallbackData("Qashqadaryo");
-        inlineKeyboardButton11.setText("Xorazm");
-        inlineKeyboardButton11.setCallbackData("Xorazm");
-        inlineKeyboardButton12.setText("Qoraqalpogiston Respublikasi");
-        inlineKeyboardButton12.setCallbackData("Qoraqalpogiston Respublikasi");
-        inlineKeyboardButtonList1.add(inlineKeyboardButton1);
-        inlineKeyboardButtonList1.add(inlineKeyboardButton2);
-        inlineKeyboardButtonList2.add(inlineKeyboardButton3);
-        inlineKeyboardButtonList2.add(inlineKeyboardButton4);
-        inlineKeyboardButtonList3.add(inlineKeyboardButton5);
-        inlineKeyboardButtonList3.add(inlineKeyboardButton6);
-        inlineKeyboardButtonList4.add(inlineKeyboardButton7);
-        inlineKeyboardButtonList4.add(inlineKeyboardButton8);
-        inlineKeyboardButtonList5.add(inlineKeyboardButton9);
-        inlineKeyboardButtonList5.add(inlineKeyboardButton10);
-        inlineKeyboardButtonList6.add(inlineKeyboardButton11);
-        inlineKeyboardButtonList6.add(inlineKeyboardButton12);
-
-
-
-
-        listsss.add(inlineKeyboardButtonList1);
-        listsss.add(inlineKeyboardButtonList2);
-        listsss.add(inlineKeyboardButtonList3);
-        listsss.add(inlineKeyboardButtonList4);
-        listsss.add(inlineKeyboardButtonList5);
-        listsss.add(inlineKeyboardButtonList6);
+        int temp=0;
+        for (int i = 0; i <allRegions.size()/2; i++) {
+            List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
+            for (int j = 0; j < 2; j++) {
+                String region = allRegions.get(temp+j);
+                if (region==null)
+                    break;
+                InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+                inlineKeyboardButton.setText(region);
+                inlineKeyboardButton.setCallbackData(region);
+                inlineKeyboardButtonList.add(inlineKeyboardButton);
+            }
+            temp=temp+2;
+            listsss.add(inlineKeyboardButtonList);
+        }
 
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(listsss);
 
 
+        return inlineKeyboardMarkup;
+    }
+    public InlineKeyboardMarkup getInlineTumanTanlash(String region) {
+
+//        List<Regions> allRegions = regionRepository.findAll();
+        List<String> allDistricts =dbConnect.getDistricts(region);
+        ArrayList<List<InlineKeyboardButton>> listss = new ArrayList<>();
+        int temp=0;
+        boolean isBreak=false;
+        for (int i = 0; i <allDistricts.size()/2+1; i++) {
+            List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
+            for (int j = 0; j < 2; j++) {
+                if ((temp+j)== allDistricts.size()){
+                    isBreak=true;
+                    break;
+                }
+                String district = allDistricts.get(temp+j);
+
+                InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+                inlineKeyboardButton.setText(district);
+                inlineKeyboardButton.setCallbackData(district);
+                inlineKeyboardButtonList.add(inlineKeyboardButton);
+            }
+            listss.add(inlineKeyboardButtonList);
+            if (isBreak) break;
+            temp=temp+2;
+        }
 
 
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.setKeyboard(listss);
+
+
+        return inlineKeyboardMarkup;
+    }
+    public InlineKeyboardMarkup getInlineSelectVillage(String district) {
+
+        List<String> allVillages =dbConnect.getVillages(district);
+        ArrayList<List<InlineKeyboardButton>> listssV = new ArrayList<>();
+        int temp=0;
+        boolean isBreak=false;
+        for (int i = 0; i <allVillages.size()/2+1; i++) {
+            List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
+            for (int j = 0; j < 2; j++) {
+                if ((temp+j)== allVillages.size()){
+                    isBreak=true;
+                    break;
+                }
+                String village = allVillages.get(temp+j);
+
+                InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+                inlineKeyboardButton.setText(village);
+                inlineKeyboardButton.setCallbackData(village);
+                inlineKeyboardButtonList.add(inlineKeyboardButton);
+            }
+            listssV.add(inlineKeyboardButtonList);
+            if (isBreak) break;
+            temp=temp+2;
+        }
+
+
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.setKeyboard(listssV);
 
 
         return inlineKeyboardMarkup;

@@ -2,6 +2,7 @@ package uz.nammqi.tg_bot_latest;
 
 
 import com.vdurmont.emoji.EmojiParser;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import uz.nammqi.tg_bot_latest.service.DBConnect;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -11,6 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import uz.nammqi.tg_bot_latest.service.EditMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +24,11 @@ public class YesCallBackData {
 
     private static String sendText = "";
 
-    public static SendMessage sendMessageReturnCallBack(Update update) {
-        DBConnect dbConnect = new DBConnect();
+    static DBConnect dbConnect = new DBConnect();
 
-        SendMessage sendMessage = new SendMessage();
+    static SendMessage sendMessage = new SendMessage();
+
+    public static SendMessage sendMessageReturnCallBack(Update update) {
 
         CallbackQuery callbackQuery = update.getCallbackQuery();
         String textFromCallBackQuery = callbackQuery.getMessage().getText();
@@ -62,10 +65,14 @@ public class YesCallBackData {
             InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(listList);
             sendMessage.setReplyMarkup(inlineKeyboardMarkup);
         }
-        int day = 0;
-        if (textFromCallBackQuery.equals("Tug`ilgan kuningiz sanasini kiriting:")) {//TODO STEP 9 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-            day = Integer.parseInt(data);
-            dbConnect.insertDay(chatId, day);
+//        int day = 0;
+// int year=0;
+        if (data.equals("yubor")) {//TODO STEP 9 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ aslida Tug`ilgan kuningiz sanasini kiriting:
+//            day = Integer.parseInt(data);
+//            dbConnect.insertDay(chatId, day);
+//            year = Integer.parseInt(data);
+//            dbConnect.insertYear(chatId, year);
+
             sendText = "Maqomingizni tanlang:";
             List<List<InlineKeyboardButton>> listList = getListsByMaqom();
 
@@ -75,37 +82,45 @@ public class YesCallBackData {
             sendMessage.setReplyMarkup(inlineKeyboardMarkup);
 
         }
-        String month = null;
-        if (textFromCallBackQuery.equals("Tug'ilgan oyingizni tanlang:")) {//TODO STEP 8 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-            month = data;
-            dbConnect.insertMonth(chatId, month);
-            sendText = "Tug`ilgan kuningiz sanasini kiriting:";
-            List<List<InlineKeyboardButton>> list = getListsByDay();
-            sendMessage = getSendMessage(chatId, sendText);
-            InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-            inlineKeyboardMarkup.setKeyboard(list);
-            sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-        }
-        int year = 0;
-        if (/*data.equals("year")*/textFromCallBackQuery.equals("Tug'ilgan yilingizni tanlang:")) {//TODO STEP 7 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-            year = Integer.parseInt(data);
-            dbConnect.insertYear(chatId, year);
-            sendText = "Tug'ilgan oyingizni tanlang:";
-            sendMessage = getSendMessage(chatId, sendText);
-            InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeyboardMarkupByMonth();
-            sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-        }
+//        String month = null;
+//        if (textFromCallBackQuery.equals("Tug'ilgan oyingizni tanlang:")) {//TODO STEP 8 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//            month = data;
+//            dbConnect.insertMonth(chatId, month);
+//            sendText = "Tug`ilgan kuningiz sanasini kiriting:";
+//            List<List<InlineKeyboardButton>> list = getListsByDay();
+//            sendMessage = getSendMessage(chatId, sendText);
+//            InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+//            inlineKeyboardMarkup.setKeyboard(list);
+//            sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+//        }
+//        int year = 0;
+//        if (textFromCallBackQuery.equals("Tug'ilgan yilingizni tanlang:")) {//TODO STEP 7 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//            year = Integer.parseInt(data);
+//            dbConnect.insertYear(chatId, year);
+//            sendText = "Tug'ilgan oyingizni tanlang:";
+//            sendMessage = getSendMessage(chatId, sendText);
+//            InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeyboardMarkupByMonth();
+//            sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+//        }
+
         String jins = null;
-        if (data.equals("erkak") || data.equals("ayol")) {//TODO STEP 6 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        if (data.equals("erkak") || data.equals("ayol")) {//TODO STEP 6-A $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
             jins = data;
             dbConnect.insertGender(chatId, jins);
-            sendText = "Tug'ilgan yilingizni tanlang:";
+            sendText = "Tug'ilgan yilingizni tanlang:\nSizning tug'ilgan yilingiz:";
             sendMessage = getSendMessage(chatId, sendText);
             InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeyboardMarkupByYear();
             sendMessage.setReplyMarkup(inlineKeyboardMarkup);
 
 
+//            Integer replyToMessageId = sendMessage.getReplyToMessageId();
+//            dbConnect.insertReplyId(chatId, replyToMessageId);
+
+            MyBot.isStartEdit = true;
+
         }
+
+
         if (data.equals("ariza") || data.equals("shikoyat") || data.equals("taklif")) { //TODO STEP 2 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
             dbConnect.insertMurojaatTuri(chatId, data);
 
@@ -114,11 +129,37 @@ public class YesCallBackData {
             ismFam = true;
 
         }
-        String hudud = null;
+        String region = null;
 
-        if (/*data.equals("1")*/ textFromCallBackQuery.equals("Hududni tanlang:")) {   //TODO STEP 4 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-            hudud = data;
-            dbConnect.insertHudud(chatId, hudud);
+        if (textFromCallBackQuery.equals("Viloyatingizni tanlang:")) {   //TODO STEP 4-District $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+            region = data;
+            dbConnect.insertHudud(chatId, region);
+
+            sendText = "Tumanni tanlang:";
+
+            sendMessage = getSendMessage(chatId, sendText);
+            InlineKeyboardMarkup inlineKeyboardMarkup = new Hudud().getInlineTumanTanlash(region);
+            sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+
+
+        }
+        String district = null;
+        if (textFromCallBackQuery.equals("Tumanni tanlang:")) {//TODO STEP 4-Village $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+            district = data;
+            dbConnect.insertDistrict(chatId, district);
+            sendText = "QFY ni kiriting:";
+
+            sendMessage = getSendMessage(chatId, sendText);
+            InlineKeyboardMarkup inlineKeyboardMarkup = new Hudud().getInlineSelectVillage(district);
+            sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+
+
+        }
+        String village = null;
+        if (textFromCallBackQuery.equals("QFY ni kiriting:")) {//TODO STEP 5-A $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+            village = data;
+            dbConnect.insertVillage(chatId, village);
+
             ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
             List<KeyboardRow> keyboardRows = new ArrayList<>();
             KeyboardRow keyboardRow = new KeyboardRow();
@@ -143,6 +184,43 @@ public class YesCallBackData {
 
     }
 
+    public static EditMessageText getEditMessageText(Update update){//todo mana wu metodni step by step tekwiriwim kk
+
+        CallbackQuery callbackQuery = update.getCallbackQuery();
+        String textFromCallBackQuery = callbackQuery.getMessage().getText();
+        String data = callbackQuery.getData();
+
+        Long chatId = callbackQuery.getMessage().getChatId();
+
+    /*    if (data.length() == 1) {*///TODO STEP 6-B $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+            String number = data;
+            String dbYear="";
+            dbYear = dbConnect.getYear(chatId);//yil oliwni tekwiriw kk
+            dbYear += data;
+
+            sendText = "Tug'ilgan yilingizni tanlang:\nSizning tug'ilgan yilingiz:" + dbYear;
+            dbConnect.insertYear(chatId, dbYear);
+            EditMessageText editMessageText = new EditMessageText();
+            editMessageText.setChatId(chatId);
+            Integer messageId = dbConnect.getMessageId(chatId);//eng oxiri wu joydan qoldim message id=0 kelyapti
+            editMessageText.setMessageId(messageId);
+            editMessageText.setText(sendText);
+            InlineKeyboardMarkup inlineKeyboardMarkup=getInlineKeyboardMarkupByYear();
+            editMessageText.setReplyMarkup(inlineKeyboardMarkup);
+//            message.getEditMessageText(editMessageText);
+
+//            sendText = sendText+data;
+
+//            sendMessage = getSendMessage(chatId, sendText);
+//
+//            InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeyboardMarkupByYear();
+//            sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+
+return editMessageText;
+
+
+    }
     private static List<List<InlineKeyboardButton>> getListsRahbarlar() {
         List<List<InlineKeyboardButton>> listList = new ArrayList<>();
         List<InlineKeyboardButton> inlineKeyboardButtonList1 = new ArrayList<>();
@@ -306,19 +384,51 @@ public class YesCallBackData {
 
     private static InlineKeyboardMarkup getInlineKeyboardMarkupByYear() {
         List<List<InlineKeyboardButton>> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+//        for (int i = 0; i < 10; i++) {
+//            List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
+//            for (int j = 0; j < 6; j++) {
+//                InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+//                int year = (i * 6 + j) + 1950;
+//                inlineKeyboardButton.setText(Integer.toString(year));
+//                inlineKeyboardButton.setCallbackData(Integer.toString(year));
+//                inlineKeyboardButtonList.add(inlineKeyboardButton);
+//            }
+//            list.add(inlineKeyboardButtonList);
+//
+//        }
+        for (int i = 1; i <= 7; i += 3) {
             List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
-            for (int j = 0; j < 6; j++) {
+            for (int j = 0; j <= 2; j++) {
                 InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
-                int year = (i * 6 + j) + 1950;
-                inlineKeyboardButton.setText(Integer.toString(year));
-                inlineKeyboardButton.setCallbackData(Integer.toString(year));
+                int number = (i + j);
+                inlineKeyboardButton.setText(Integer.toString(number));
+                inlineKeyboardButton.setCallbackData(Integer.toString(number));
+
+                inlineKeyboardButton.setSwitchInlineQueryCurrentChat(Integer.toString(number));
+
                 inlineKeyboardButtonList.add(inlineKeyboardButton);
             }
             list.add(inlineKeyboardButtonList);
 
 
         }
+        List<InlineKeyboardButton> inlineKeyboardButtonList = new ArrayList<>();
+        InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+        inlineKeyboardButton.setText(Integer.toString(0));
+        inlineKeyboardButton.setCallbackData(Integer.toString(0));
+
+        inlineKeyboardButton.setSwitchInlineQueryCurrentChat(Integer.toString(0));
+
+        inlineKeyboardButtonList.add(inlineKeyboardButton);
+
+        List<InlineKeyboardButton> inlineKeyboardButtonListSend = new ArrayList<>();
+        InlineKeyboardButton inlineKeyboardButtonSend = new InlineKeyboardButton();
+        inlineKeyboardButtonSend.setText("Yuborish");
+        inlineKeyboardButtonSend.setCallbackData("yubor");
+        inlineKeyboardButtonListSend.add(inlineKeyboardButtonSend);
+        list.add(inlineKeyboardButtonListSend);
+        list.add(inlineKeyboardButtonList);
+        //todo yilni 1-9 gaca ciqadigan qilish kerak
 
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
